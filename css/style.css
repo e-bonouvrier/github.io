@@ -1,0 +1,135 @@
+:root {
+  --papier: #eef4fb;
+  --encre: #3a3f5c;
+  --gris: #5c6381;
+  --bleu: #cfe2f5;
+  --bleu-doux: #e2edf9;
+  --bleu-ciel: #c2d6f0;
+  --violet: #d6cbf3;
+  --violet-clair: #e4dcf7;
+  --violet-fonce: #6f60b4;
+  --etoile: #a899e0;
+  --beige: #f4e8d3;
+  --or: #e8cf98;
+  --titre: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --texte: "Nunito", system-ui, sans-serif;
+  --marge: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--papier); color: var(--encre); font: 400 1.125rem/1.65 var(--texte); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet-fonce); outline-offset: 3px; }
+header, main, footer { position: relative; z-index: 1; }
+.cadre { max-width: 84rem; margin-inline: auto; padding-inline: var(--marge); }
+
+/* Ciel flottant (créé par script.js) */
+.ciel { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.nuage {
+  position: absolute; left: 0; top: var(--y); width: var(--t); height: calc(var(--t) * 0.38);
+  border-radius: 999px; background: #fff; opacity: var(--o);
+  animation: derive var(--d) linear var(--delai) infinite;
+}
+.nuage::before, .nuage::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+.nuage::before { width: 46%; height: 130%; left: 14%; top: -60%; }
+.nuage::after { width: 34%; height: 100%; left: 46%; top: -40%; }
+.etoile {
+  position: absolute; left: var(--x); top: var(--y); width: var(--t); height: var(--t);
+  background: var(--c); opacity: 0.8;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: scintille var(--d) ease-in-out var(--delai) infinite;
+}
+.lune {
+  position: absolute; z-index: 2; top: 0.2rem; right: calc(var(--marge) - 1rem);
+  width: clamp(3.5rem, 7vw, 5.5rem); aspect-ratio: 1; border-radius: 50%;
+  box-shadow: -1.1rem 0.45rem 0 0 var(--or);
+  animation: flotte 7s ease-in-out infinite;
+}
+@keyframes derive { from { transform: translateX(-100%); } to { transform: translateX(100vw); } }
+@keyframes scintille { 50% { opacity: 0.25; transform: scale(0.6) rotate(20deg); } }
+@keyframes flotte { 50% { transform: translateY(0.7rem) rotate(-6deg); } }
+
+/* En-tête */
+.entete { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.25rem; }
+.logo { font: 600 1.35rem var(--titre); text-decoration: none; }
+.menu { display: flex; gap: 0.5rem; margin: 0; padding: 0; list-style: none; font: 500 1rem var(--titre); }
+.menu a { display: block; padding: 0.4rem 1rem; border-radius: 999px; text-decoration: none; }
+.menu a:hover { background: var(--beige); }
+
+/* Accueil */
+.hero { position: relative; display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--marge); padding-block: 2rem 4rem; }
+.hero-nom { align-self: end; margin: 0; font: 600 clamp(4rem, 12vw, 10rem)/0.92 var(--titre); letter-spacing: -0.02em; }
+.hero-panneau {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 2rem;
+  min-height: 22rem; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: 2.5rem;
+  background: var(--bleu); color: var(--encre);
+  animation: ouvre 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.hero-metier { margin: 0; font: 600 clamp(2rem, 4vw, 3.25rem)/1.05 var(--titre); }
+.hero-panneau p { margin: 0; max-width: 30ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.bouton { padding: 0.75rem 1.4rem; border: 2px solid var(--encre); border-radius: 999px; font: 500 1rem var(--titre); text-decoration: none; }
+.bouton-plein { background: var(--violet); }
+.bouton:hover { background: var(--beige); }
+@keyframes ouvre { from { clip-path: inset(0 0 0 100% round 2.5rem); } to { clip-path: inset(0 round 2.5rem); } }
+
+/* Sections */
+.section { padding-block: 4rem; }
+.section-titre { margin: 0 0 2rem; font: 600 clamp(2rem, 5vw, 3.5rem)/1.05 var(--titre); }
+
+/* Projets */
+.grille { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2.5rem var(--marge); }
+.projet { grid-column: span 4; margin: 0; transform: rotate(-0.6deg); transition: transform 0.25s; }
+.projet:nth-child(even) { transform: rotate(0.6deg); }
+.projet:hover { transform: none; }
+.projet-large { grid-column: span 7; }
+.projet-moyen { grid-column: span 5; }
+.visuel { position: relative; overflow: hidden; height: clamp(13rem, 26vw, 24rem); margin-bottom: 0.9rem; border-radius: 1.75rem; }
+.visuel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.visuel::before {
+  content: ""; position: absolute; right: -8%; bottom: -12%; width: 55%; aspect-ratio: 1;
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; background: var(--forme);
+}
+.v1 { background: var(--bleu); --forme: var(--beige); }
+.v2 { background: var(--beige); --forme: var(--violet); }
+.v3 { background: var(--violet-clair); --forme: var(--bleu); }
+.v4 { background: var(--bleu-ciel); --forme: var(--papier); }
+.v5 { background: var(--bleu-doux); --forme: var(--violet); }
+.v3::before { border-radius: 50% 50% 0 0; }
+.projet h3 { margin: 0; font: 600 1.4rem/1.2 var(--titre); }
+.projet p { margin: 0.2rem 0 0; color: var(--gris); font-size: 1rem; }
+
+/* À propos */
+.apropos { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--marge); }
+.apropos p { max-width: 60ch; margin: 0 0 1.25rem; }
+.listes { display: grid; gap: 1.5rem; align-content: start; }
+.listes h3 { margin: 0 0 0.6rem; font: 600 1.15rem var(--titre); }
+.listes ul { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; font-size: 1rem; }
+.listes li { padding: 0.15rem 0.9rem; border-radius: 999px; background: var(--beige); }
+
+/* Contact */
+.contact { margin-top: 4rem; padding-block: 4rem; border-radius: 3rem 3rem 0 0; background: var(--violet-clair); }
+.contact p { max-width: 50ch; margin: 0 0 1.5rem; }
+.mail {
+  display: inline-block; margin-bottom: 1.5rem; font: 600 clamp(1.5rem, 4.5vw, 3.25rem)/1.15 var(--titre);
+  overflow-wrap: anywhere; text-decoration: underline wavy var(--violet-fonce);
+  text-decoration-thickness: 2px; text-underline-offset: 0.2em;
+}
+.reseaux { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0; padding: 0; list-style: none; font: 500 1rem var(--titre); }
+.reseaux a { display: block; padding: 0.45rem 1.1rem; border-radius: 999px; background: var(--papier); text-decoration: none; }
+.reseaux a:hover { background: var(--beige); }
+.pied { margin: 0; padding-block: 1.5rem; background: var(--violet-clair); font-size: 0.9rem; color: var(--gris); }
+
+@media (max-width: 48rem) {
+  .hero, .apropos { grid-template-columns: 1fr; }
+  .projet, .projet-large, .projet-moyen { grid-column: 1 / -1; }
+  .menu { gap: 0.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-panneau, .lune, .etoile { animation: none; }
+  .nuage { animation: none; left: var(--x); }
+  .projet { transition: none; }
+}
